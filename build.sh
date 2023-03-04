@@ -98,8 +98,8 @@ export PATH="$TC_DIR/bin:$PATH"
 
 make $MAKE_PARAMS mrproper
 make $MAKE_PARAMS $DEFCONFIG
-cp "$OUTPUT"/.config $KERNEL_SRC/arch/arm64/configs/lisa_defconfig
-tg_post_build "$KERNEL_SRC/out/.config"
+cp "$OUTPUT"/.config $KERNEL_DIR/arch/arm64/configs/lisa_defconfig
+tg_post_build "$KERNEL_DIR/out/.config"
 tg_post_msg "<b>Successfully regenerated defconfig at $DEFCONFIG</b>"
 
 
