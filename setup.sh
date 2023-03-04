@@ -3,6 +3,8 @@
 # Install pigz
 pacman -Sy --needed --noconfirm pigz
 
+pip3 -q install telegram-send
+
 # Helper function for cloning: gsc = git shallow clone
 gsc() {
 	git clone --depth=1 -q $@

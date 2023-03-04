@@ -4,6 +4,31 @@
 # Copyright (C) 2020-2021 Adithya R.
 # (edits for CrystalCore kernel @dkpost3)
 
+###############################   MISC   #################################
+
+# functions
+error() {
+	telegram-send "Error⚠️: $*"
+	exit 1
+}
+
+success() {
+	telegram-send "Success: $*"
+}
+
+inform() {
+	telegram-send --format html "$@"
+}
+
+muke() {
+	if [[ -z $COMPILER || -z $COMPILER32 ]]; then
+		error "Compiler is missing"
+	fi
+	if ! make $@ ${MAKE_ARGS[@]} $FLAG; then
+		error "make failed"
+	fi
+}
+
 ##----------------------------------------------------------##
 
 BOT_MSG_URL="https://api.telegram.org/bot$TOKEN/sendMessage"
@@ -14,7 +39,7 @@ CI="Cirrus CI"
 CHATID=${chat_id}
 TOKEN=${token}
 
-tg_post_msg()
+inform()
 {
 	curl -s -X POST "$BOT_MSG_URL" -d chat_id="$chat_id" \
 	-d "disable_web_page_preview=true" \
@@ -66,7 +91,7 @@ export KBUILD_BUILD_USER ARCH SUBARCH PATH \
 export DISTRO=$(source /etc/os-release && echo "${NAME}")
 export KBUILD_BUILD_HOST=$(uname -a | awk '{print $2}')
 export CI_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-TERM=xterm
+TERM=xterm-256color
 
 ## Check for CI
 if [ "$CI" ]
@@ -85,7 +110,7 @@ then
 		export BASEDIR=$DRONE_REPO_NAME
 		export SERVER_URL="${DRONE_SYSTEM_PROTO}://${DRONE_SYSTEM_HOSTNAME}/${AUTHOR}/${BASEDIR}/${KBUILD_BUILD_VERSION}"
 	else
-		tg_post_msg "<b>##----------------------------------------------------------##</b>"
+		inform "##----------------------------------------------------------##"
 	fi
 fi
 
@@ -101,22 +126,19 @@ export PATH="$TC_DIR/bin:$PATH"
 make $MAKE_PARAMS mrproper
 make $MAKE_PARAMS $DEFCONFIG
 cp "$OUTPUT"/.config $KERNEL_DIR/arch/arm64/configs/lisa_defconfig
-tg_post_build "$KERNEL_DIR/out/.config"
-tg_post_msg "<b>Successfully regenerated defconfig at $DEFCONFIG</b>"
+telegram-send --file "$KERNEL_DIR/out/.config"
+inform "<b>Successfully regenerated defconfig at $DEFCONFIG</b>"
 
 
 if [[ $1 = "-c" || $1 = "--clean" ]]; then
 	rm -rf out
 fi
 
-# New defconfig to use instead
-LISADEF="lisa_defconfig"
-
 mkdir -p out
 make $MAKE_PARAMS $DEFCONFIG
 
-tg_post_msg "<b>$KBUILD_BUILD_VERSION CI Build Triggered</b>%0A<b>Docker OS: </b><code>$DISTRO</code>%0A<b>Kernel Version : </b><code>$KV</code>%0A<b>Date : </b><code>$(TZ=Asia/Jakarta date)</code>%0A<b>Device : </b><code>$MODEL [$DEVICE]</code>%0A<b>Pipeline Host : </b><code>$CI</code>%0A<b>Host Core Count : </b><code>$PROCS</code>%0A<b>Compiler Used : </b><code>$KBUILD_COMPILER_STRING</code>%0A<b>Linker : </b><code>$LINKER</code>%0a<b>Branch : </b><code>$CI_BRANCH</code>%0A<b>Top Commit : </b><code>$COMMIT_HEAD</code>%0A<a href='$SERVER_URL'>Link</a>"
-tg_post_msg "<b>Starting compilation</b>"
+inform "<b>$KBUILD_BUILD_VERSION CI Build Triggered</b>%0A<b>Docker OS: </b><code>$DISTRO</code>%0A<b>Kernel Version : </b><code>$KV</code>%0A<b>Date : </b><code>$(TZ=Asia/Jakarta date)</code>%0A<b>Device : </b><code>$MODEL [$DEVICE]</code>%0A<b>Pipeline Host : </b><code>$CI</code>%0A<b>Host Core Count : </b><code>$PROCS</code>%0A<b>Compiler Used : </b><code>$KBUILD_COMPILER_STRING</code>%0A<b>Linker : </b><code>$LINKER</code>%0a<b>Branch : </b><code>$CI_BRANCH</code>%0A<b>Top Commit : </b><code>$COMMIT_HEAD</code>%0A<a href='$SERVER_URL'>Link</a>"
+inform "<b>Starting compilation</b>"
 make -j$(nproc --all) $MAKE_PARAMS || exit $?
 make -j$(nproc --all) $MAKE_PARAMS INSTALL_MOD_PATH=modules INSTALL_MOD_STRIP=1 modules_install
 
@@ -125,11 +147,11 @@ dtb="out/arch/arm64/boot/dts/vendor/qcom/yupik.dtb"
 dtbo="out/arch/arm64/boot/dts/vendor/qcom/lisa-sm7325-overlay.dtbo"
 
 if [ -f "$kernel" ] && [ -f "$dtb" ] && [ -f "$dtbo" ]; then
-	tg_post_msg "<b>Kernel compiled succesfully!</b>"
+	inform "<b>Kernel compiled succesfully!</b>"
 fi
 	cp $kernel $AK3_DIR
 	cp $dtb $AK3_DIR/dtb
-	tg_post_msg "<b>Creating DTBO Image</b>"
+	inform "<b>Creating DTBO Image</b>"
 	python3 scripts/dtc/libfdt/mkdtboimg.py create $AK3_DIR/dtbo.img --page_size=4096 $dtbo
 	cp $(find out/modules/lib/modules/5.4* -name '*.ko') $AK3_DIR/modules/vendor/lib/modules/
 	cp out/modules/lib/modules/5.4*/modules.{alias,dep,softdep} $AK3_DIR/modules/vendor/lib/modules
@@ -137,11 +159,11 @@ fi
 	sed -i 's/\(kernel\/[^: ]*\/\)\([^: ]*\.ko\)/\/vendor\/lib\/modules\/\2/g' $AK3_DIR/modules/vendor/lib/modules/modules.dep
 	sed -i 's/.*\///g' $AK3_DIR/modules/vendor/lib/modules/modules.load
 	rm -rf out/arch/arm64/boot out/modules
-	tg_post_msg "<b>!Zipping Up!</b>"
+	inform "<b>!Zipping Up!</b>"
 	cd $AK3_DIR
 	zip -r9 "$ZIPNAME" * -x ".git" -x ".github" -x "README.md" -x "*placeholder"
-	tg_post_build "${ZIPNAME}"
-	tg_post_msg "<b>!Completed in $((SECONDS / 60)) minute(s) and $((SECONDS % 60)) second(s)!</b>"
+	telegram-send --file "${ZIPNAME}"
+	inform "<b>!Completed in $((SECONDS / 60)) minute(s) and $((SECONDS % 60)) second(s)!</b>"
 	cd ..
 	exit
 fi
