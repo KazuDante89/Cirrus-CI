@@ -1,6 +1,7 @@
 env:
     token: "ENCRYPTED[!4864324da4bfc1efe720f96246de745af6754a9acd2a14da7fdb855fec524dfcc2c0020cb3845250cc1912a6e52042bb!]"
     chat_id: "ENCRYPTED[!75e027498e5161aca49b8eee86b00a6ff7eea40a46c9c34ab0e0b3656001b1dcc2f5f50d3eb8c7f6c1ea20ee5b662837!]"
+    CWk_DIR: /tmp/cirrus-ci-build
 
 task:
   name: "Kernel Builder"
