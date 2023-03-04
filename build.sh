@@ -87,7 +87,7 @@ then
 	fi
 fi
 
-BLDV="R0.2-v0.0.0"
+BLDV="R0.2-v0.0.1"
 ZIPNAME="Proton-$BLDV.zip"
 ZIPSIGNED="Proton-$BLDV-signed.zip"
 
