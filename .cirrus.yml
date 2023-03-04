@@ -1,0 +1,16 @@
+env:
+    token: "ENCRYPTED[adb5b60f82fccb61e72617f1d05c0f865b3495adc5c57e48f782f8b6d135c04a38f70aa140fd051d1f72d402d09520c5]"
+    chat_id: "ENCRYPTED[91eaa66453a806ac50df6cd06282d5d2dcbdb0a97dd18f9f386f5e23f499932e6bae4ba98c81eee5b9ee5b710a073cdc]"
+
+task:
+  name: "Kernel Builder"
+  timeout_in: 2h
+  container:
+      image: ghcr.io/neutron-toolchains/docker-image:arch-neutron
+      cpu: 8
+      memory: 32G
+
+  Build_script:
+      - ln -fs /usr/share/zoneinfo/Asia/Dhaka /etc/localtime && date
+      - locale-gen en_US en_US.UTF-8
+      - bash setup.sh
