@@ -1,5 +1,12 @@
 #!/usr/bin/env bash
 
+pip3 -q install telegram-send
+
+sed -i s/demo1/"${token}"/g telegram-send.conf
+sed -i s/demo2/"${chat_id}"/g telegram-send.conf
+mkdir "$HOME"/.config
+mv telegram-send.conf "$HOME"/.config/telegram-send.conf
+
 KERNEL_SRC="$CWk_DIR/Kernel"
 AK3_DIR="$CWk_DIR/AnyKernel3"
 

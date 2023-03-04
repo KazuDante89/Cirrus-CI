@@ -6,6 +6,37 @@
 
 ##----------------------------------------------------------##
 
+# functions
+error() {
+	telegram-send "Error⚠️: $*"
+	exit 1
+}
+
+success() {
+	telegram-send "Success: $*"
+}
+
+inform() {
+	telegram-send --format html "$@"
+}
+
+muke() {
+	if [[ -z $COMPILER || -z $COMPILER32 ]]; then
+		error "Compiler is missing"
+	fi
+	if ! make $@ ${MAKE_ARGS[@]} $FLAG; then
+		error "make failed"
+	fi
+}
+
+usage() {
+	inform " ./build.sh <arg>
+		--compiler   sets the compiler to be used
+		--device     sets the device for kernel build
+		--silence    Silence shell output of Kbuild"
+	exit 2
+}
+
 tg_post_msg()
 {
 	curl -s -X POST "$BOT_MSG_URL" -d chat_id="$CHATID" \
@@ -136,7 +167,7 @@ fi
 	cd $AK3_DIR
 	zip -r9 "$ZIPNAME" * -x ".git" -x ".github" -x "README.md" -x "*placeholder"
 	echo "Zip: $ZIPNAME"
-	tg_post_build "${ZIPNAME}"
+	telegram-send --file ${ZIPNAME}
 	tg_post_msg "<b>!Completed in $((SECONDS / 60)) minute(s) and $((SECONDS % 60)) second(s)!</b>"
 	cd ..
 	exit
