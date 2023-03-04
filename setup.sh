@@ -26,7 +26,7 @@ gsc https://github.com/ghostrider-reborn/AnyKernel3.git -b lisa AnyKernel3
 gsc https://github.com/KazuDante89/android_kernel_ghost_lisa.git -b Proton_R0.3 Kernel
 
 # Move script to kernel source
-mv $(pwd)/build.sh Kernel/build.sh
+mv build.sh Kernel/build.sh
 cd Kernel
 
 # Execute build script
