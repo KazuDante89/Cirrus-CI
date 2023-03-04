@@ -39,8 +39,9 @@ SECONDS=0 # builtin bash timer
 PROCS=$(nproc --all)
 CI="Cirrus CI"
 CHATID="-1001293242785"
-TC_DIR="$CWk_DIR/clang"
-OUTPUT="$CWK_DIR/Kernel/out"
+KERNEL_DIR=$(pwd)
+TC_DIR="$KERNEL_DIR/../clang"
+OUTPUT="$KERNEL_DIR/out"
 DEFCONFIG="lisa_defconfig"
 KBUILD_COMPILER_STRING=$("$TC_DIR"/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')
 MAKE_PARAMS1="ARCH=arm64 CC=$TC_DIR/bin/clang CLANG_TRIPLE=$TC_DIR/bin/aarch64-linux-gnu- LD=$TC_DIR/bin/ld.lld LLVM=1 LLVM_IAS=1 \
