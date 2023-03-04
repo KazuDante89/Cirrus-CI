@@ -41,6 +41,7 @@ CI="Cirrus CI"
 CHATID="-1001293242785"
 KERNEL_DIR=$(pwd)
 TC_DIR="$KERNEL_DIR/../clang"
+AK3_DIR="$KERNEL_DIR/../AnyKernel3"
 OUTPUT="$KERNEL_DIR/out"
 DEFCONFIG="lisa_defconfig"
 KBUILD_COMPILER_STRING=$("$TC_DIR"/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')
