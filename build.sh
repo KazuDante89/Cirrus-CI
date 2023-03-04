@@ -6,9 +6,17 @@
 
 ##----------------------------------------------------------##
 
+BOT_MSG_URL="https://api.telegram.org/bot$TOKEN/sendMessage"
+BOT_BUILD_URL="https://api.telegram.org/bot$TOKEN/sendDocument"
+SECONDS=0 # builtin bash timer
+PROCS=$(nproc --all)
+CI="Cirrus CI"
+CHATID=${chat_id}
+TOKEN=${token}
+
 tg_post_msg()
 {
-	curl -s -X POST "$BOT_MSG_URL" -d chat_id="$CHATID" \
+	curl -s -X POST "$BOT_MSG_URL" -d chat_id="$chat_id" \
 	-d "disable_web_page_preview=true" \
 	-d "parse_mode=html" \
 	-d text="$1"
@@ -33,12 +41,6 @@ tg_post_build()
 MODEL="Xiaomi 11 Lite 5G NE"
 DEVICE="lisa"
 ARCH=arm64
-BOT_MSG_URL="https://api.telegram.org/bot$token/sendMessage"
-BOT_BUILD_URL="https://api.telegram.org/bot$token/sendDocument"
-SECONDS=0 # builtin bash timer
-PROCS=$(nproc --all)
-CI="Cirrus CI"
-CHATID="-1001293242785"
 KERNEL_DIR=$(pwd)
 TOOLCHAIN="$KERNEL_DIR/../toolchains"
 TC_DIR="$TOOLCHAIN/clang"
