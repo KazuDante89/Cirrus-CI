@@ -181,10 +181,6 @@ then
 	fi
 fi
 
-#Check Kernel Version
-KERVER=$(make kernelversion)
-
-
 # Set a commit head
 COMMIT_HEAD=$(git log --oneline -1)
 
@@ -298,5 +294,5 @@ if [ $LOG_DEBUG = "1" ]
 then
 	tg_post_build "error.log" "$CHATID" "Debug Mode Logs"
 fi
-exit 
+exit
 ##----------------*****-----------------------------##
