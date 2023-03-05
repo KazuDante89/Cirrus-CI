@@ -4,19 +4,8 @@
 echo "Installing PIGZ"
 pacman -Sy --needed --noconfirm pigz
 
-# Install telegram-cli
-echo "Installing Telegram-CLI"
-yay -S --noconfirm telegram-cli-git
-
 KERNEL_SRC="$CWk_DIR/Kernel"
 AK3_DIR="$KERNEL_SRC/AnyKernel3"
-TOKEN=$token
-CHATID=$chat_id
-BOT_MSG_URL="https://api.telegram.org/bot$TOKEN/sendMessage"
-BOT_BUILD_URL="https://api.telegram.org/bot$TOKEN/sendDocument"
-SECONDS=0 # builtin bash timer
-PROCS=$(nproc --all)
-CI="Cirrus CI"
 
 # Helper function for cloning: gsc = git shallow clone
 gsc() {
@@ -27,7 +16,7 @@ gsc() {
 echo "Downloading Neutron Clang"
 mkdir $CWk_DIR/clang
 cd $CWk_DIR/clang
-bash <(curl -s https://raw.githubusercontent.com/Neutron-Toolchains/antman/main/antman) -S=16012023
+bash <(curl -s https://raw.githubusercontent.com/Neutron-Toolchains/antman/main/antman) -S=latest
 cd ../..
 
 # Clone Kernel Source
