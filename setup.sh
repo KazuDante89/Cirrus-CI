@@ -43,4 +43,4 @@ echo "AnyKernel3 Completed"
 
 # Copy script over to source
 cd $KERNEL_SRC
-bash <(curl -s https://raw.githubusercontent.com/KazuDante89/Cirrus-CI/main/build.sh)
+bash <(curl -s https://raw.githubusercontent.com/KazuDante89/Cirrus-CI/main/compile.sh)
