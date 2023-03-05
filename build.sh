@@ -150,4 +150,3 @@ fi
 	tg_post_msg "<b>!Completed in $((SECONDS / 60)) minute(s) and $((SECONDS % 60)) second(s)!</b>"
 	cd ..
 	exit
-fi
