@@ -4,7 +4,7 @@ env:
     CWk_DIR: /tmp/cirrus-ci-build
 
 task:
-  name: "Kernel Builder"
+  name: "Proton Kernel Kitchen"
   timeout_in: 2h
   container:
       image: ghcr.io/neutron-toolchains/docker-image:arch-neutron
