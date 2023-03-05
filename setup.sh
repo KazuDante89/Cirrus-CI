@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-python -m pip install requests
+pip3 install tg
 
 KERNEL_SRC="$CWk_DIR/Kernel"
 AK3_DIR="$KERNEL_SRC/AnyKernel3"
@@ -29,10 +29,9 @@ gsc https://github.com/ghostrider-reborn/AnyKernel3.git -b lisa $AK3_DIR
 echo "AnyKernel3 Completed"
 
 # Copy script over to source
-cp $(pwd)/build.sh $KERNEL_SRC/build.#!/bin/sh
+# cp $(pwd)/build.sh $KERNEL_SRC/build.#!/bin/sh
 cd $KERNEL_SRC
-chmod +x build.sh
-# wget -c https://raw.githubusercontent.com/KazuDante89/Cirrus-CI/main/build.sh -o build.sh
+wget -c https://raw.githubusercontent.com/KazuDante89/Cirrus-CI/main/build.sh -o build.sh
 
 # Start build process
 bash build.sh
