@@ -18,17 +18,21 @@ bash <(curl -s https://raw.githubusercontent.com/Neutron-Toolchains/antman/main/
 cd ../..
 
 # Clone Kernel Source
+echo "Downloading Kernel Source"
 mkdir $KERNEL_SRC
-echo "Downloading Kernel Source.."
 gsc https://github.com/KazuDante89/android_kernel_ghost_lisa.git -b Proton_R0.3 $KERNEL_SRC
+echo "Kernel Source Completed"
 
 echo "Cloning AnyKernel3"
 mkdir $AK3_DIR
 gsc https://github.com/ghostrider-reborn/AnyKernel3.git -b lisa $AK3_DIR
+echo "AnyKernel3 Completed"
 
 # Copy script over to source
+cp $(pwd)/build.sh $KERNEL_SRC/build.#!/bin/sh
 cd $KERNEL_SRC
-wget -c https://raw.githubusercontent.com/KazuDante89/Cirrus-CI/main/build.sh -o build.sh
+chmod +x build.sh
+# wget -c https://raw.githubusercontent.com/KazuDante89/Cirrus-CI/main/build.sh -o build.sh
 
 # Start build process
 bash build.sh

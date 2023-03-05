@@ -6,8 +6,8 @@
 
 ##----------------------------------------------------------##
 
-TOKEN=${token}
-CHATID=${chat_id}
+TOKEN=$token
+CHATID=$chat_id
 BOT_MSG_URL="https://api.telegram.org/bot$TOKEN/sendMessage"
 BOT_BUILD_URL="https://api.telegram.org/bot$TOKEN/sendDocument"
 SECONDS=0 # builtin bash timer
@@ -35,8 +35,8 @@ curl --request POST \
 	   --data @-
 {
 "document": "$ZIPNAME",
-"caption": "Here's the build.",
-"disable_notification": true,
+"caption": "Here's the build",
+"disable_notification": false,
 "reply_to_message_id": null,
 "chat_id": "$CHATID"
 }
