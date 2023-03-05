@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
 
-pip3 install tg
+# Install pigz
+echo "Installing PIGZ"
+pacman -Sy --needed --noconfirm pigz
+
+# Install telegram-cli
+echo "Installing Telegram-CLI"
+yay -S --noconfirm telegram-cli-git
 
 KERNEL_SRC="$CWk_DIR/Kernel"
 AK3_DIR="$KERNEL_SRC/AnyKernel3"

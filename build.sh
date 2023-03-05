@@ -128,9 +128,10 @@ kernel="out/arch/arm64/boot/Image"
 dtb="out/arch/arm64/boot/dts/vendor/qcom/yupik.dtb"
 dtbo="out/arch/arm64/boot/dts/vendor/qcom/lisa-sm7325-overlay.dtbo"
 
-if [ -f "$kernel" ] && [ -f "$dtb" ] && [ -f "$dtbo" ]; then
-	tg_post_msg "<b>Kernel compiled succesfully!</b>"
-fi
+# if [ -f "$kernel" ] && [ -f "$dtb" ] && [ -f "$dtbo" ]; then
+	# tg_post_msg "<b>Kernel compiled succesfully!</b>"
+# fi
+
 	cp "$kernel" $AK3_DIR
 	cp "$dtb" $AK3_DIR/dtb
 	tg_post_msg "<b>Creating DTBO Image</b>"
@@ -150,3 +151,5 @@ fi
 	tg_post_msg "<b>!Completed in $((SECONDS / 60)) minute(s) and $((SECONDS % 60)) second(s)!</b>"
 	cd ..
 	exit
+
+	##----------------*****-----------------------------##
