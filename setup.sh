@@ -4,6 +4,13 @@ pip3 install tg
 
 KERNEL_SRC="$CWk_DIR/Kernel"
 AK3_DIR="$KERNEL_SRC/AnyKernel3"
+TOKEN=$token
+CHATID=$chat_id
+BOT_MSG_URL="https://api.telegram.org/bot$TOKEN/sendMessage"
+BOT_BUILD_URL="https://api.telegram.org/bot$TOKEN/sendDocument"
+SECONDS=0 # builtin bash timer
+PROCS=$(nproc --all)
+CI="Cirrus CI"
 
 # Helper function for cloning: gsc = git shallow clone
 gsc() {
@@ -29,10 +36,5 @@ gsc https://github.com/ghostrider-reborn/AnyKernel3.git -b lisa $AK3_DIR
 echo "AnyKernel3 Completed"
 
 # Copy script over to source
-# cp $(pwd)/build.sh $KERNEL_SRC/build.#!/bin/sh
 cd $KERNEL_SRC
-wget -c https://raw.githubusercontent.com/KazuDante89/Cirrus-CI/main/build.sh -o build.sh
-
-# Start build process
-bash build.sh
-# bash <(curl -s https://raw.githubusercontent.com/KazuDante89/Cirrus-CI/main/build.sh)
+bash <(curl -s https://raw.githubusercontent.com/KazuDante89/Cirrus-CI/main/build.sh)
