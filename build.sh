@@ -13,7 +13,6 @@ BOT_BUILD_URL="https://api.telegram.org/bot$TOKEN/sendDocument"
 SECONDS=0 # builtin bash timer
 PROCS=$(nproc --all)
 CI="Cirrus CI"
-COMPILER="$1"
 
 tg_post_msg()
 {
@@ -24,21 +23,23 @@ tg_post_msg()
 
 }
 
-tg_post_kernel() {
-#Post MD5Checksum alongwith for easeness
-MD5CHECK=$(md5sum "$1" | cut -d' ' -f1)
-#Show the Checksum alongwith caption
-curl --request POST \
-	   --url https://api.telegram.org/bot$TOKEN/sendDocument \
-	   --header 'accept: application/json' \
-	   --header 'content-type: application/json' \
-	   --data @-
+tg_post_build()
 {
-"document": "$ZIPNAME",
-"caption": "Here's the build",
-"disable_notification": false,
-"reply_to_message_id": null,
-"chat_id": "$CHATID"
+  #Show the Checksum alongwith caption
+	curl --progress-bar -F document=@"$1" "$BOT_BUILD_URL" \
+	-F chat_id="$CHATID"  \
+	-F "disable_web_page_preview=true" \
+	-F "parse_mode=Markdown" \
+}
+
+tg_post_file()
+{
+	#Show the Checksum alongwith caption
+	curl --progress-bar -F document=@"$1" "$BOT_BUILD_URL" \
+	-F chat_id="$CHATID"  \
+	-F "disable_web_page_preview=true" \
+	-F "parse_mode=Markdown" \
+	-F "caption: Here you go" \
 }
 
 ##----------------------------------------------------------##
@@ -144,7 +145,8 @@ fi
 	cd $AK3_DIR
 	zip -r9 "$ZIPNAME" * -x ".git" -x ".github" -x "README.md" -x "*placeholder"
 	echo "Zip: $ZIPNAME"
-	tg_post_kernel "${ZIPNAME}"
+	tg_post_file "${ZIPNAME}"
+	tg_post_message "<b>$ZIPNAME</b>"
 	tg_post_msg "<b>!Completed in $((SECONDS / 60)) minute(s) and $((SECONDS % 60)) second(s)!</b>"
 	cd ..
 	exit
