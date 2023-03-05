@@ -105,7 +105,7 @@ DEF_REG=0
 output="$KERNEL_DIR/out/arch/arm64/boot"
 
 # Files/artifacts
-kernel="$output/Image
+kernel="$output/Image"
 dtb="$output/dts/vendor/qcom/yupik.dtb"
 dtbo="$output/dts/vendor/qcom/lisa-sm7325-overlay.dtbo"
 
