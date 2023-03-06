@@ -1,14 +1,13 @@
 #! /usr/bin/env python
 
-# User Info
-Zip="$UPLOADFOLDER/$ZIPNAME"
 
 import requests
 
 def send_to_telegram(document):
 
+    apiToken = '{token}'
     chatID = '{chat_id}'
-    apiURL = f'https://api.telegram.org/bot{token}/sendDocument'
+    apiURL = f'https://api.telegram.org/bot{apiToken}/sendDocument'
 
     try:
         response = requests.post(apiURL, json={'{chat_id}': chatID, 'document': zip})
@@ -16,4 +15,4 @@ def send_to_telegram(document):
     except Exception as e:
         print(e)
 
-send_to_telegram("$Zip")
+send_to_telegram /tmp/cirrus-ci-build/upload/$ZIPNAME
