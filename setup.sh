@@ -6,9 +6,10 @@ pacman -Sy --needed --noconfirm pigz
 pacman -Sy --needed --noconfirm python-pip
 pip3 install python-telegram-bot
 
-KERNEL_SRC="$CWk_DIR/Kernel"
-AK3_DIR="$KERNEL_SRC/AnyKernel3"
-UPLOADFOLDER="$CWk_DIR/upload"
+KERNEL_SRC="$CWk_DIR"/Kernel
+AK3_DIR="$KERNEL_SRC"/AnyKernel3
+OUTPUT="$KERNEL_SRC"/out
+UPLOADFOLDER="$CWk_DIR"/upload
 
 # Helper function for cloning: gsc = git shallow clone
 gsc() {

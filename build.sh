@@ -15,6 +15,19 @@ tg_post_msg()
 
 }
 
+tg_post_build()
+{
+	#Post MD5Checksum alongwith for easeness
+	MD5CHECK=$(md5sum "$1" | cut -d' ' -f1)
+
+	#Show the Checksum alongwith caption
+	curl --progress-bar -F document=@"$1" "$BOT_BUILD_URL" \
+	-F chat_id="$CHATID"  \
+	-F "disable_web_page_preview=true" \
+	-F "parse_mode=Markdown" \
+	-F caption="$2 | *MD5 Checksum : *\`$MD5CHECK\`"
+}
+
 ##----------------------------------------------------------##
 
 MODEL="Xiaomi 11 Lite 5G NE"
@@ -108,21 +121,22 @@ dtbo="out/arch/arm64/boot/dts/vendor/qcom/lisa-sm7325-overlay.dtbo"
 if [ -f "$kernel" ] && [ -f "$dtb" ] && [ -f "$dtbo" ]; then
 	tg_post_msg "<b>Kernel compiled succesfully!</b>"
 fi
-	cp $kernel $AK3_DIR
-	cp $dtb $AK3_DIR/dtb
+	cp "$kernel" "$AK3_DIR"/Image
+	cp "$dtb" "$AK3_DIR"/dtb
 	tg_post_msg "<b>Creating DTBO Image</b>"
-	python3 scripts/dtc/libfdt/mkdtboimg.py create $AK3_DIR/dtbo.img --page_size=4096 $dtbo
-	cp $(find out/modules/lib/modules/5.4* -name '*.ko') $AK3_DIR/modules/vendor/lib/modules/
-	cp out/modules/lib/modules/5.4*/modules.{alias,dep,softdep} $AK3_DIR/modules/vendor/lib/modules
-	cp out/modules/lib/modules/5.4*/modules.order $AK3_DIR/modules/vendor/lib/modules/modules.load
-	sed -i 's/\(kernel\/[^: ]*\/\)\([^: ]*\.ko\)/\/vendor\/lib\/modules\/\2/g' $AK3_DIR/modules/vendor/lib/modules/modules.dep
-	sed -i 's/.*\///g' $AK3_DIR/modules/vendor/lib/modules/modules.load
+	python3 scripts/dtc/libfdt/mkdtboimg.py create "$AK3_DIR"/dtbo.img --page_size=4096 $dtbo
+	cp "$(find $OUTPUT/modules/lib/modules/5.4* -name '*.ko')" "$AK3_DIR"/modules/vendor/lib/modules/
+	cp $OUTPUT/modules/lib/modules/5.4*/modules.{alias,dep,softdep} $AK3_DIR/modules/vendor/lib/modules
+	cp $OUTPUT/modules/lib/modules/5.4*/modules.order $AK3_DIR/modules/vendor/lib/modules/modules.load
+	sed -i 's/\(kernel\/[^: ]*\/\)\([^: ]*\.ko\)/\/vendor\/lib\/modules\/\2/g' "$AK3_DIR"/modules/vendor/lib/modules/modules.dep
+	sed -i 's/.*\///g' "$AK3_DIR"/modules/vendor/lib/modules/modules.load
 	rm -rf out/arch/arm64/boot out/modules
 	tg_post_msg "<b>!Zipping Up!</b>"
-	cd $AK3_DIR
+	cd "$AK3_DIR"
 	zip -r9 "$ZIPNAME" * -x ".git" -x ".github" -x "README.md" -x "*placeholder"
-	echo "Zip: $ZIPNAME"
-	cp $ZIPNAME $UPLOADFOLDER
+	echo "Zip: "$ZIPNAME""
+	tg_post_build "$ZIPNAME"
+	cp "$ZIPNAME" "$UPLOADFOLDER"
 	tg_post_msg "<b>! "$ZIMPNAME" Completed in $((SECONDS / 60)) minute(s) and $((SECONDS % 60)) second(s) !</b>"
-	cd $UPLOADFOLDER
+	cd "$UPLOADFOLDER"
 	curl https://raw.githubusercontent.com/KazuDante89/Cirrus-CI/main/upload.sh | python3 -
