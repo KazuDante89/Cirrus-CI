@@ -4,9 +4,6 @@ env:
     CWk_DIR: /tmp/cirrus-ci-build
     finalzip: /tmp/cirrus-ci-build/upload/$ZIPNAME
 
-pkginstall_script:
-  -
-
 task:
   name: "Proton Kernel Kitchen"
   timeout_in: 2h

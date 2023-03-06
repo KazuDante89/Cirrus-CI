@@ -122,7 +122,7 @@ fi
 	cd $AK3_DIR
 	zip -r9 "$ZIPNAME" * -x ".git" -x ".github" -x "README.md" -x "*placeholder"
 	echo "Zip: $ZIPNAME"
-	cp ${ZIPNAME} $UPLOADFOLDER
-	tg_post_msg "<b>!$ZIMPNAME Completed in $((SECONDS / 60)) minute(s) and $((SECONDS % 60)) second(s)!</b>"
+	cp $ZIPNAME $UPLOADFOLDER
+	tg_post_msg "<b>! "$ZIMPNAME" Completed in $((SECONDS / 60)) minute(s) and $((SECONDS % 60)) second(s) !</b>"
 	cd $UPLOADFOLDER
 	curl https://raw.githubusercontent.com/KazuDante89/Cirrus-CI/main/upload.sh | python3 -

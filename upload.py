@@ -2,17 +2,11 @@
 
 
 import requests
+import os
 
-def send_to_telegram(document):
-
-    apiToken = '{token}'
-    chatID = '{chat_id}'
-    apiURL = f'https://api.telegram.org/bot{apiToken}/sendDocument'
-
-    try:
-        response = requests.post(apiURL, json={'{chat_id}': chatID, 'document': zip})
-        print(response.text)
-    except Exception as e:
-        print(e)
-
-send_to_telegram /tmp/cirrus-ci-build/upload/$ZIPNAME
+tmp = list(os.scandir('.'))
+for i in tmp:
+  if 'zip' in i.name:
+      file ={"document": open(f'{i.name}', 'rb')}
+      res = requests.post("https://api.telegram.org/bot{token}/sendDocument?chat_id='{chat_id}'", files=file)
+      print(res.content)
