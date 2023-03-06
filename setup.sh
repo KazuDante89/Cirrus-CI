@@ -3,9 +3,12 @@
 # Install pigz
 echo "Installing PIGZ"
 pacman -Sy --needed --noconfirm pigz
+pacman -Sy --needed --noconfirm python-pip
+pip3 install python-telegram-bot
 
 KERNEL_SRC="$CWk_DIR/Kernel"
 AK3_DIR="$KERNEL_SRC/AnyKernel3"
+UPLOADFOLDER="$CWk_DIR/upload"
 
 # Helper function for cloning: gsc = git shallow clone
 gsc() {
@@ -29,6 +32,10 @@ echo "Cloning AnyKernel3"
 mkdir $AK3_DIR
 gsc https://github.com/ghostrider-reborn/AnyKernel3.git -b lisa $AK3_DIR
 echo "AnyKernel3 Completed"
+
+# Uploading directory
+echo "Create Upload directory"
+mkdir $UPLOADFOLDER
 
 # Copy script over to source
 cd $KERNEL_SRC
