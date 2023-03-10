@@ -7,7 +7,7 @@ task:
   name: "Proton Kernel Kitchen"
   timeout_in: 2h
   container:
-      image: atomxorg/arch-linux:latest
+      image: ghcr.io/neutron-toolchains/docker-image:arch-neutron
       cpu: 7
       memory: 28G
 
