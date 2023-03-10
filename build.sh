@@ -52,12 +52,12 @@ export CI_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 ##----------------------------------------------------------##
 
 SECONDS=0 # builtin bash timer
-TC_DIR="$BASE_DIR/clang"
-AK3_DIR="$BASE_DIR/AnyKernel3"
+TC_DIR="$CWK_DIR/clang"
+AK3_DIR="$CWK_DIR/AnyKernel3"
 KERNEL_DIR="$KERNEL_SRC"
 DEFCONFIG="lisa_defconfig"
 DEF_DIR="$KERNEL_DIR/arch/arm64/configs/lisa_defconfig"
-output="$BASE_DIR/Kernel/out"
+output="$CWK_DIR/Kernel/out"
 KERNEL_DIR="$KERNEL_SRC"
 DEF_REGENED="$(pwd)"/.config
 
