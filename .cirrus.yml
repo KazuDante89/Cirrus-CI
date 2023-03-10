@@ -1,0 +1,17 @@
+env:
+    token: "ENCRYPTED[1e4ca09f40bec52bc90ecc8b5bd2b5b7e84329fe4f767cbae1807ce6d62011ae912328af30f384f3f92e3c0f4ec2cf0b]"
+    chat_id: "ENCRYPTED[!75e027498e5161aca49b8eee86b00a6ff7eea40a46c9c34ab0e0b3656001b1dcc2f5f50d3eb8c7f6c1ea20ee5b662837!]"
+    CWk_DIR: /tmp/cirrus-ci-build
+
+task:
+  name: "Proton Kernel Kitchen"
+  timeout_in: 2h
+  container:
+      image: atomxorg/arch-linux:latest
+      cpu: 7
+      memory: 28G
+
+  Build_script:
+      - ln -fs /usr/share/zoneinfo/Asia/Dhaka /etc/localtime && date
+      - locale-gen en_US en_US.UTF-8
+      - bash setup.sh
